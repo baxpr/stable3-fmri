@@ -13,7 +13,7 @@ gunzip "${out_dir}"/ctrrfmri?.nii.gz \
     "${out_dir}"/ctrrfmri_mean_all.nii.gz \
     "${out_dir}"/biasnorm.nii.gz \
     "${out_dir}"/y_deffwd.nii.gz
-run_spm12.sh "${MATLAB_RUNTIME}" function matlab_entrypoint \
+run_matlab_entrypoint.sh "${MATLAB_RUNTIME}" \
     hpf_sec "${hpf_sec}" \
     fwhm_mm "${fwhm_mm}"
 
