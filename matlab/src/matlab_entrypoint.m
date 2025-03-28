@@ -1,5 +1,11 @@
 function matlab_entrypoint(varargin)
 
+%% Just quit, if requested - needed for docker build
+if numel(varargin)==1 && strcmp(varargin{1},'quit') && isdeployed
+	disp('Exiting as requested')
+	exit
+end
+    
 % Parse inputs
 P = inputParser;
 addOptional(P,'fmri1_nii','/OUTPUTS/ctrrfmri1.nii')
