@@ -23,7 +23,7 @@ spm_deformations(job);
 inp.wfmri1_nii = fullfile(inp.out_dir,['w' n e]);
 [~,n,e] = fileparts(inp.fmri2_nii);
 inp.wfmri2_nii = fullfile(inp.out_dir,['w' n e]);
-[~,n,e] = fileparts(inp.fmri3_nii);
+[~,n,e] = fileparts(inp.meanfmri_nii);
 inp.wmeanfmri_nii = fullfile(inp.out_dir,['w' n e]);
 
 % Smooth warped fmri timeseries
