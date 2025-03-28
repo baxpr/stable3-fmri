@@ -21,15 +21,15 @@ ENV MCR_INHIBIT_CTF_LOCK=1
 ENV MCR_CACHE_ROOT=/tmp
 
 # Copy the pipeline code
-COPY matlab /opt/hct-fmri/matlab
-COPY src /opt/hct-fmri/src
-COPY README.md /opt/hct-fmri/README.md
+COPY matlab /opt/stable3-fmri/matlab
+COPY src /opt/stable3-fmri/src
+COPY README.md /opt/stable3-fmri/README.md
 
 # Add pipeline to system path
-ENV PATH /opt/hct-fmri/src:/opt/hct-fmri/matlab/bin:${PATH}
+ENV PATH /opt/stable3-fmri/src:/opt/stable3-fmri/matlab/bin:${PATH}
 
 # Matlab executable must be run at build to extract the CTF archive
-RUN run_spm12.sh ${MATLAB_RUNTIME} function quit
+RUN run_matlab_entrypoint.sh ${MATLAB_RUNTIME} function quit
 
 # Entrypoint
 ENTRYPOINT ["pipeline_entrypoint.sh"]
