@@ -29,7 +29,7 @@ COPY README.md /opt/stable3-fmri/README.md
 ENV PATH /opt/stable3-fmri/src:/opt/stable3-fmri/matlab/bin:${PATH}
 
 # Matlab executable must be run at build to extract the CTF archive
-RUN run_matlab_entrypoint.sh ${MATLAB_RUNTIME} function quit
+RUN run_matlab_entrypoint.sh ${MATLAB_RUNTIME} quit
 
 # Entrypoint
 ENTRYPOINT ["pipeline_entrypoint.sh"]
