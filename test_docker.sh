@@ -8,7 +8,7 @@ docker run \
     --fmri2_niigz /INPUTS/fmri2.nii.gz \
     --fmritopup_niigz /INPUTS/fmritopup.nii.gz \
     --seg_niigz /INPUTS/seg.nii.gz \
-    --icv_niigz /INPUTS/icv_native.nii.gz \
+    --icv_niigz /INPUTS/icv.nii.gz \
     --deffwd_niigz /INPUTS/y_deffwd.nii.gz \
     --biascorr_niigz /INPUTS/biascorr.nii.gz \
     --biasnorm_niigz /INPUTS/biasnorm.nii.gz \
