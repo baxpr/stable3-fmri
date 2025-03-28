@@ -3,7 +3,7 @@
 docker run \
     --mount type=bind,src=`pwd -P`/INPUTS,dst=/INPUTS \
     --mount type=bind,src=`pwd -P`/OUTPUTS,dst=/OUTPUTS \
-    baxterprogers/stable3-fmri:test \
+    stable3-fmri:test \
     --fmri1_niigz /INPUTS/fmri1.nii.gz \
     --fmri2_niigz /INPUTS/fmri2.nii.gz \
     --fmritopup_niigz /INPUTS/fmritopup.nii.gz \
