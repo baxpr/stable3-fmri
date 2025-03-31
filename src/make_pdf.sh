@@ -79,5 +79,5 @@ convert -size 2600x3365 xc:white \
 convert \
     page_reg.png \
     page_design_${spm_dirtag}.png page_${spm_dirtag}*.png \
-    prl-fmri.pdf
+    stable3-fmri.pdf
 
