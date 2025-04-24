@@ -1,0 +1,98 @@
+# https://github.com/baxpr/stable3-fmri
+# Requires cat12, multiatlas/slant, eprime-stable3
+---
+procyamlversion: 3.0.0-dev.0
+containers:
+  - name: stable3-fmri
+    path: stable3-fmri_v2.1.1.sif
+    source: docker://baxterprogers/stable3-fmri:v2.1.1
+requirements:
+  walltime: 0-8
+  memory: 16G
+
+inputs:
+
+  xnat:
+
+    filters:
+      - type: match
+        inputs: scan_t1,assr_cat12/t1scan
+      - type: match
+        inputs: scan_t1,assr_slant/scan_t1
+      - type: match
+        inputs: scan_fmri1,assr_eprime/scan_fmri
+        
+    scans:
+
+      - name: scan_t1
+        types: 'cs_T1W_3D_TFE_32 channel'
+        skip_unusable: True
+        keep_multis: first
+
+      - name: scan_fmri1
+        types: Stable3_Run1
+        resources:
+          - {resource: NIFTI, fmatch: '*.nii.gz', fdest: fmri1.nii.gz}
+        needs_qc: True
+        skip_unusable: True
+
+      - name: scan_fmri2
+        types: Stable3_Run2
+        resources:
+          - {resource: NIFTI, fmatch: '*.nii.gz', fdest: fmri2.nii.gz}
+        needs_qc: True
+        skip_unusable: True
+
+      - name: scan_fmritopup
+        types: TopUp
+        resources:
+          - {resource: NIFTI, fmatch: '*.nii.gz', fdest: fmritopup.nii.gz}
+        needs_qc: True
+        skip_unusable: True
+
+    assessors:
+
+      - name: assr_cat12
+        proctypes: cat12_ss2p0_v2
+        resources:
+          - {resource: DEF_FWD, fmatch: '*.nii.gz', fdest: y_deffwd.nii.gz}
+          - {resource: BIAS_CORR, fmatch: '*.nii.gz', fdest: biascorr.nii.gz}
+          - {resource: BIAS_NORM, fmatch: '*.nii.gz', fdest: biasnorm.nii.gz}
+          - {resource: ICV_NATIVE, fmatch: '*.nii.gz', fdest: icv_native.nii.gz}
+
+      - name: assr_slant
+        proctypes: slant_cpu_v1
+        resources:
+          - {resource: SEG, ftype: FILE, fmatch: '*.nii.gz', fdest: seg.nii.gz}
+
+      - name: assr_eprime
+        proctypes: eprime-stable3_v2
+        resources:
+          - {resource: TRIALS_CSV, fmatch: 'trial_report.csv', fdest: trial_report.csv}  
+
+outputs:
+  - pdf: stable3-fmri.pdf
+  - dir: spm_cue_mu3_feedback_epsi3_orth1
+  - {path: wctrrfmri_mean_all.nii.gz, type: FILE, resource: MEANFMRI_MNI}
+
+
+command: 
+  type: singularity_run
+  container: stable3-fmri
+  args: >-
+    --fmri1_niigz /INPUTS/fmri1.nii.gz
+    --fmri2_niigz /INPUTS/fmri2.nii.gz
+    --fmritopup_niigz /INPUTS/fmritopup.nii.gz
+    --seg_niigz /INPUTS/seg.nii.gz
+    --icv_niigz /INPUTS/icv_native.nii.gz
+    --deffwd_niigz /INPUTS/y_deffwd.nii.gz
+    --biascorr_niigz /INPUTS/biascorr.nii.gz
+    --biasnorm_niigz /INPUTS/biasnorm.nii.gz
+    --trialreport_csv /INPUTS/trial_report.csv
+    --pedir "+j"
+    --vox_mm 2
+    --hpf_sec 300
+    --fwhm_mm 6
+    --out_dir /OUTPUTS
+
+jobtemplate: job_template_v3.txt
